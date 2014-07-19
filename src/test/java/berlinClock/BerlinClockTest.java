@@ -7,14 +7,6 @@ import java.time.LocalTime;
 
 public class BerlinClockTest {
 
-    public static final String DEFAULT_TOP_HOURS = "OOOO";
-
-    public static final String DEFAULT_BOTTOM_HOURS = "OOOO";
-
-    public static final String DEFAULT_TOP_MINUTES = "OOOOOOOOOOO";
-
-    public static final String DEFAULT_BOTTOM_MINUTES = "OOOO";
-
     BerlinClock berlinClock = new BerlinClock();
 
     @DataProvider(name = "secondsOn")
@@ -33,11 +25,7 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOn()
-                .topHourRowIs(DEFAULT_TOP_HOURS)
-                .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
-                .topMinuteRowIs(DEFAULT_TOP_MINUTES)
-                .bottomMinuteRowIs(DEFAULT_BOTTOM_MINUTES);
+                .secondsAreOn();
     }
 
     @DataProvider(name = "secondsOff")
@@ -56,11 +44,7 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOff()
-                .topHourRowIs(DEFAULT_TOP_HOURS)
-                .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
-                .topMinuteRowIs(DEFAULT_TOP_MINUTES)
-                .bottomMinuteRowIs(DEFAULT_BOTTOM_MINUTES);
+                .secondsAreOff();
     }
 
     @DataProvider(name = "hoursDatas")
@@ -90,20 +74,17 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOn()
                 .topHourRowIs(topHourRow)
-                .bottomHourRowIs(bottomHourRow)
-                .topMinuteRowIs(DEFAULT_TOP_MINUTES)
-                .bottomMinuteRowIs(DEFAULT_BOTTOM_MINUTES);
+                .bottomHourRowIs(bottomHourRow);
     }
 
     @DataProvider(name = "minutesDatas")
     public Object[][] getMinutesDatas() {
         return new Object[][]{
-                {1, DEFAULT_TOP_MINUTES, "YOOO"},
-                {2, DEFAULT_TOP_MINUTES, "YYOO"},
-                {3, DEFAULT_TOP_MINUTES, "YYYO"},
-                {4, DEFAULT_TOP_MINUTES, "YYYY"},
+                {1, "OOOOOOOOOOO", "YOOO"},
+                {2, "OOOOOOOOOOO", "YYOO"},
+                {3, "OOOOOOOOOOO", "YYYO"},
+                {4, "OOOOOOOOOOO", "YYYY"},
                 {5, "YOOOOOOOOOO", "OOOO"},
                 {10, "YYOOOOOOOOO", "OOOO"},
                 {15, "YYROOOOOOOO", "OOOO"},
@@ -121,9 +102,6 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOn()
-                .topHourRowIs(DEFAULT_TOP_HOURS)
-                .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
                 .topMinuteRowIs(topMinuteRow)
                 .bottomMinuteRowIs(bottomMinuteRow);
     }
@@ -138,14 +116,14 @@ public class BerlinClockTest {
                         "OOOOOOOOOOO",
                         "OOOO"
                 },
-                {LocalTime.of(13,17,1),
+                {LocalTime.of(13, 17, 1),
                         false,
                         "RROO",
                         "RRRO",
                         "YYROOOOOOOO",
                         "YYOO"
                 },
-                {LocalTime.of(23,59,59),
+                {LocalTime.of(23, 59, 59),
                         false,
                         "RRRR",
                         "RRRO",
