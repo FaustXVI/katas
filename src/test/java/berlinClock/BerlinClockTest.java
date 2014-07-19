@@ -17,35 +17,46 @@ public class BerlinClockTest {
 
     BerlinClock berlinClock = new BerlinClock();
 
-    @Test
-    public void shouldAllBeOffAtMidnight() {
-        LocalTime time = LocalTime.MIDNIGHT;
-        BerlinClockTime actual = berlinClock.translateTime(time);
-        BerlinClockTimeAssert.assertThat(actual)
-                .isNotNull()
-                .secondsAreOff()
-                .topHourRowIs(DEFAULT_TOP_HOURS)
-                .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
-                .topMinuteRowIs(DEFAULT_TOP_MINUTES)
-                .bottomMinuteRowIs(DEFAULT_BOTTOM_MINUTES);
-    }
-
     @DataProvider(name = "secondsOn")
     public Object[][] getSecondsOn() {
         return new Object[][]{
-                {1},
-                {3},
+                {0},
+                {2},
+                {4},
         };
     }
 
     @Test(dataProvider = "secondsOn")
-    public void onlySecondsShouldBeOnAtMidnightAndASecond(int seconds) {
+    public void secondsLightShouldBeOnIfSecondsAreEven(int seconds) {
         LocalTime time = LocalTime.MIDNIGHT;
         time = time.plusSeconds(seconds);
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
                 .secondsAreOn()
+                .topHourRowIs(DEFAULT_TOP_HOURS)
+                .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
+                .topMinuteRowIs(DEFAULT_TOP_MINUTES)
+                .bottomMinuteRowIs(DEFAULT_BOTTOM_MINUTES);
+    }
+
+    @DataProvider(name = "secondsOff")
+    public Object[][] getSecondsOff() {
+        return new Object[][]{
+                {1},
+                {3},
+                {5},
+        };
+    }
+
+    @Test(dataProvider = "secondsOff")
+    public void secondsLightShouldBeOffIfSecondsAreOdd(int seconds) {
+        LocalTime time = LocalTime.MIDNIGHT;
+        time = time.plusSeconds(seconds);
+        BerlinClockTime actual = berlinClock.translateTime(time);
+        BerlinClockTimeAssert.assertThat(actual)
+                .isNotNull()
+                .secondsAreOff()
                 .topHourRowIs(DEFAULT_TOP_HOURS)
                 .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
                 .topMinuteRowIs(DEFAULT_TOP_MINUTES)
@@ -79,7 +90,7 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOff()
+                .secondsAreOn()
                 .topHourRowIs(topHourRow)
                 .bottomHourRowIs(bottomHourRow)
                 .topMinuteRowIs(DEFAULT_TOP_MINUTES)
@@ -110,9 +121,47 @@ public class BerlinClockTest {
         BerlinClockTime actual = berlinClock.translateTime(time);
         BerlinClockTimeAssert.assertThat(actual)
                 .isNotNull()
-                .secondsAreOff()
+                .secondsAreOn()
                 .topHourRowIs(DEFAULT_TOP_HOURS)
                 .bottomHourRowIs(DEFAULT_BOTTOM_HOURS)
+                .topMinuteRowIs(topMinuteRow)
+                .bottomMinuteRowIs(bottomMinuteRow);
+    }
+
+    @DataProvider(name = "integrationDatas")
+    public Object[][] getIntegrationDatas() {
+        return new Object[][]{
+                {LocalTime.MIDNIGHT,
+                        true,
+                        "OOOO",
+                        "OOOO",
+                        "OOOOOOOOOOO",
+                        "OOOO"
+                },
+                {LocalTime.of(13,17,1),
+                        false,
+                        "RROO",
+                        "RRRO",
+                        "YYROOOOOOOO",
+                        "YYOO"
+                },
+                {LocalTime.of(23,59,59),
+                        false,
+                        "RRRR",
+                        "RRRO",
+                        "YYRYYRYYRYY",
+                        "YYYY"
+                },
+        };
+    }
+
+    @Test(dataProvider = "integrationDatas")
+    public void lightsShouldReflectRealTime(LocalTime time, boolean secondsLightOn, String topHourRow, String bottomHourRow, String topMinuteRow, String bottomMinuteRow) {
+        BerlinClockTime actual = berlinClock.translateTime(time);
+        BerlinClockTimeAssert.assertThat(actual)
+                .secondsAre(secondsLightOn)
+                .topHourRowIs(topHourRow)
+                .bottomHourRowIs(bottomHourRow)
                 .topMinuteRowIs(topMinuteRow)
                 .bottomMinuteRowIs(bottomMinuteRow);
     }

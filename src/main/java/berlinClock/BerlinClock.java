@@ -23,11 +23,11 @@ public class BerlinClock {
     }
 
     private void handleSeconds(LocalTime time, BerlinClockTime berlinClockTime) {
-        berlinClockTime.setSeconds(areSecondsOdd(time));
+        berlinClockTime.setSeconds(areSecondsEven(time));
     }
 
-    private boolean areSecondsOdd(LocalTime time) {
-        return time.getSecond() % 2 != 0;
+    private boolean areSecondsEven(LocalTime time) {
+        return time.getSecond() % 2 == 0;
     }
 
     private void handleMinutes(LocalTime time, BerlinClockTime berlinClockTime) {

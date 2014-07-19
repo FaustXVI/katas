@@ -42,4 +42,9 @@ public class BerlinClockTimeAssert extends GenericAssert<BerlinClockTimeAssert, 
         Assertions.assertThat(actual.getBottomMinuteRow()).isEqualTo(bottomMinuteRow);
         return this;
     }
+
+    public BerlinClockTimeAssert secondsAre(boolean value) {
+        Assertions.assertThat(actual.getSeconds()).isEqualTo(value);
+        return this;
+    }
 }
