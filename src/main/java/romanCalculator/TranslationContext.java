@@ -1,4 +1,6 @@
-public class TranslationContext {
+package romanCalculator;
+
+class TranslationContext {
     private String operand;
 
     private String oldOperand;

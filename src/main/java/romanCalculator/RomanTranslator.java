@@ -1,6 +1,8 @@
+package romanCalculator;
+
 import java.util.*;
 
-public class RomanTranslator {
+class RomanTranslator {
 
     private final RomanMap intToRoman = new RomanMap();
 

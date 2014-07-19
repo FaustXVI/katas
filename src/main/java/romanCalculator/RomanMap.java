@@ -1,6 +1,8 @@
+package romanCalculator;
+
 import java.util.*;
 
-public class RomanMap {
+class RomanMap {
 
     TreeMap<Integer, String> romanNumbers = createIntToRomanMap();
 

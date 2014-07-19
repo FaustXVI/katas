@@ -1,3 +1,5 @@
+package romanCalculator;
+
 public class RomanCalculator {
 
     private final RomanTranslator romanTranslator;
